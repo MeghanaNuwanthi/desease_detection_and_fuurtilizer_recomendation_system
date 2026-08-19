@@ -1,0 +1,78 @@
+{
+  "welcome": "Welcome",
+  "ayubowan": "Ayubowan!",
+  "ready_check": "Ready to check your crops?",
+  "select_language": "Please choose your language to continue.",
+  "continue": "Continue",
+  "diagnosis": "Diagnosis",
+  "scan_crop": "Scan Crop",
+  "upload": "Upload",
+  "from_gallery": "From Gallery",
+  "common_diseases": "Common Diseases",
+  "view_all": "View All",
+  "learn_more": "Learn more",
+  "designed_farmers": "Designed for Sri Lankan Farmers",
+  "home": "Home",
+  "history": "History",
+  "scan": "Scan",
+  "fertilizer": "Fertilizer",
+  "settings": "Settings",
+  "upload_image": "Upload Image",
+  "capture_leaf": "Capture Leaf Image",
+  "fertilizer_guide": "Fertilizer Guide",
+  "analysis_result": "Analysis Result",
+  "detected_disease": "Detected Disease",
+  "confidence": "Confidence",
+  "severity": "Severity",
+  "recommendation": "Recommendation",
+  "view_treatment_plan": "View Treatment Plan",
+  "scan_again": "Scan Another Plant",
+  "save_result": "Save Result",
+  "ai_scanning": "AI is analyzing the crop...",
+  "water_management": "Water Management",
+  "treatment": "Treatment Plan",
+
+  "nitrogen": "Nitrogen (N)",
+  "nitrogen_desc": "Boosts leaf growth and plant color.",
+  "nitrogen_rec": "Recommended: Urea",
+
+  "phosphorus": "Phosphorus (P)",
+  "phosphorus_desc": "Improves root development and flowering.",
+  "phosphorus_rec": "Recommended: Triple Super Phosphate",
+
+  "potassium": "Potassium (K)",
+  "potassium_desc": "Strengthens plant resistance to disease.",
+  "potassium_rec": "Recommended: Muriate of Potash",
+
+  "organic_fertilizer": "Organic Fertilizer",
+  "organic_desc": "Improves soil fertility and microbial activity.",
+  "organic_rec": "Recommended: Compost / Manure",
+
+  "paddy_blast": "Paddy Blast",
+  "brown_spot": "Brown Spot",
+  "healthy_leaf": "Healthy Leaf",
+
+  "high": "High",
+  "medium": "Medium",
+  "low": "Low",
+
+  "disease_description": "Our AI has detected clear signs of Paddy Blast disease. Immediate treatment is recommended.",
+
+  "fertilizer_recommendation": "Apply Isoprothiolane 40%",
+
+  "treatment_plan": "Treatment Plan",
+  "result_saved": "Result saved to history",
+
+  "disease_overview": "Disease Overview",
+  "disease_overview_text": "Paddy Blast is a fungal disease that affects rice crops. It spreads quickly in humid conditions and can severely reduce yield.",
+  "water_management_text": "• Maintain proper drainage\n• Avoid excessive irrigation\n• Keep water level around 2-3cm\n• Reduce humidity around plants",
+
+  "fertilizer_recommendation_title": "Fertilizer Recommendation",
+  "fertilizer_recommendation_text": "• Reduce nitrogen fertilizer\n• Apply balanced NPK fertilizer\n• Add potassium to strengthen plant resistance",
+
+  "chemical_treatment": "Recommended Pesticide",
+  "chemical_treatment_text": "Apply Isoprothiolane 40% EC\nDosage: 1.5ml per liter of water\nSpray every 7 days if symptoms continue.",
+
+  "prevention_tips": "Prevention Tips",
+  "prevention_tips_text": "• Use resistant rice varieties\n• Maintain field sanitation\n• Avoid dense planting\n• Monitor fields regularly"
+}

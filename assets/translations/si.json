@@ -1,0 +1,78 @@
+{
+  "welcome": "ආයුබෝවන්",
+  "ayubowan": "ආයුබෝවන්!",
+  "ready_check": "ඔබේ වගාව පරීක්ෂා කිරීමට සූදානම්ද?",
+  "select_language": "ඉදිරියට යාමට භාෂාව තෝරන්න.",
+  "continue": "ඉදිරියට",
+  "diagnosis": "රෝග හඳුනාගැනීම",
+  "scan_crop": "වගාව ස්කෑන් කරන්න",
+  "upload": "පින්තූරය තෝරන්න",
+  "from_gallery": "ගැලරියෙන්",
+  "common_diseases": "සාමාන්‍ය රෝග",
+  "view_all": "සියල්ල බලන්න",
+  "learn_more": "වැඩිදුර",
+  "designed_farmers": "ශ්‍රී ලාංකික ගොවීන් සඳහා නිර්මාණය කරන ලදී",
+  "home": "මුල් පිටුව",
+  "history": "ඉතිහාසය",
+  "scan": "ස්කෑන්",
+  "fertilizer": "පොහොර",
+  "settings": "සැකසුම්",
+  "upload_image": "රූපය උඩුගත කරන්න",
+  "capture_leaf": "පත්‍ර රූපය ගන්න",
+  "fertilizer_guide": "පෝෂක මාර්ගෝපදේශය",
+  "analysis_result": "විශ්ලේෂණ ප්‍රතිඵල",
+  "detected_disease": "හඳුනාගත් රෝගය",
+  "confidence": "විශ්වාසය",
+  "severity": "ගැඹුර",
+  "recommendation": "නිර්දේශය",
+  "view_treatment_plan": "ප්‍රතිකාර සැලැස්ම බලන්න",
+  "scan_again": "නවතත් ස්කෑන් කරන්න",
+  "save_result": "ප්‍රතිඵලය සුරකින්න",
+  "ai_scanning": "AI විසින් වගාව විශ්ලේෂණය කරයි...",
+  "water_management": "ජල කළමනාකරණය",
+  "treatment": "ප්‍රතිකාර සැලැස්ම",
+
+  "nitrogen": "නයිට්‍රජන් (N)",
+  "nitrogen_desc": "පත්‍ර වර්ධනය සහ පැළෑටි වර්ණය වැඩි කරයි.",
+  "nitrogen_rec": "නිර්දේශිත: යුරියා",
+
+  "phosphorus": "ෆොස්පරස් (P)",
+  "phosphorus_desc": "මූල වර්ධනය සහ මල් වර්ධනය වැඩි කරයි.",
+  "phosphorus_rec": "නිර්දේශිත: ට්‍රිපල් සුපර් ෆොස්පේට්",
+
+  "potassium": "පොටෑසියම් (K)",
+  "potassium_desc": "රෝග වලට පැළෑටි ප්‍රතිරෝධය වැඩි කරයි.",
+  "potassium_rec": "නිර්දේශිත: මියුරියට් ඔෆ් පොටෑෂ්",
+
+  "organic_fertilizer": "කාබනික පෝෂක",
+  "organic_desc": "මෘදා උරුමය සහ ජීව විද්‍යාත්මක ක්‍රියාකාරකම් වැඩි කරයි.",
+  "organic_rec": "නිර්දේශිත: කොම්පෝස්ට් / ගොබ්බර",
+
+  "paddy_blast": "පැඩි බ්ලාස්ට්",
+  "brown_spot": "බ්‍රවුන් ස්පොට්",
+  "healthy_leaf": "සෞඛ්‍ය සම්පන්න පත්‍ර",
+
+  "high": "ඉහළ",
+  "medium": "මධ්‍යම",
+  "low": "අඩු",
+
+  "disease_description": "අපගේ AI පද්ධතිය Paddy Blast රෝගයේ ලක්ෂණ හඳුනාගෙන ඇත. වහාම ප්‍රතිකාර කිරීම නිර්දේශ කරයි.",
+
+  "fertilizer_recommendation": "Isoprothiolane 40% යොදන්න",
+
+  "treatment_plan": "ප්‍රතිකාර සැලැස්ම",
+  "result_saved": "ප්‍රතිඵලය ඉතිහාසයට සුරකින්නා ලදී",
+
+  "disease_overview": "රෝගයේ සාරාංශය",
+  "disease_overview_text": "Paddy Blast යනු කුඹුරු වගාවට බලපාන ෆංගස් රෝගයකි. ඉහළ ආර්ද්‍රතාවයේදී එය ඉක්මනින් පැතිරී අස්වැන්නට දැඩි බලපෑමක් ඇති කරයි.",
+  "water_management_text": "• හොඳ ජල නිකාසයක් පවත්වා ගන්න\n• අධික ජලය යෙදීම වලක්වන්න\n• ජල මට්ටම 2-3cm පමණ තබාගන්න\n• පැළ අවට ආර්ද්‍රතාවය අඩු කරන්න",
+
+  "fertilizer_recommendation_title": "පොහොර නිර්දේශ",
+  "fertilizer_recommendation_text": "• නයිට්‍රජන් පොහොර අඩු කරන්න\n• සමබර NPK පොහොර යොදන්න\n• පැළ ශක්තිමත් කිරීමට පොටෑසියම් එක් කරන්න",
+
+  "chemical_treatment": "නිර්දේශිත කෘමිනාශක",
+  "chemical_treatment_text": "Isoprothiolane 40% EC යොදන්න\nමාත්‍රාව: ලීටර් 1 ජලයට 1.5ml\nරෝග ලක්ෂණ පවතිනවා නම් දින 7කට වරක් ඉසින්න.",
+
+  "prevention_tips": "වැළැක්වීමේ උපදෙස්",
+  "prevention_tips_text": "• රෝගයට ප්‍රතිරෝධී වර්ග භාවිතා කරන්න\n• වගා භූමිය පිරිසිදු තබා ගන්න\n• ඝන වගා කිරීම වලක්වන්න\n• වගා භූමිය නිතර පරීක්ෂා කරන්න"
+}

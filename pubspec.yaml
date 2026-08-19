@@ -1,0 +1,49 @@
+name: desease_detection_and_fuurtilizer_recomendation
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  flutter_localizations:
+    sdk: flutter
+
+  intl: ^0.20.2
+
+  shared_preferences: ^2.2.2
+
+  image_picker: ^1.0.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icons/app_logo.png"
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/icons/app_logo.png
+    - assets/translations/
+    - assets/images/paddy.jpg
+    - assets/images/rice_blast.png
+    - assets/images/brown_spot.png
+    - assets/images/leaf_scald.png
