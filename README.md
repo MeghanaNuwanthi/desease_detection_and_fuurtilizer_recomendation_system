@@ -1,0 +1,1 @@
+# desease_detection_and_fuurtilizer_recomendation_system
