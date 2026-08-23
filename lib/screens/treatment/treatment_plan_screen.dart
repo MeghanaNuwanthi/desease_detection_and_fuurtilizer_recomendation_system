@@ -1,34 +1,23 @@
 import 'package:flutter/material.dart';
 import '../../config/app_colors.dart';
 import '../../localization/app_localization.dart';
+import '../../data/disease_catalog.dart';
 
 class TreatmentPlanScreen extends StatelessWidget {
+  /// Raw label from the classifier, e.g. "paddy_blast" - drives which
+  /// content is shown. This screen is only ever opened for diseased
+  /// results, never "healthy_leaf".
+  final String diseaseKey;
 
-  final String diseaseName;
-
-  const TreatmentPlanScreen({
-    super.key,
-    required this.diseaseName,
-  });
-
-  void saveResult(BuildContext context) {
-
-    final t = AppLocalization.of(context);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(t.translate("result_saved")),
-      ),
-    );
-  }
+  const TreatmentPlanScreen({super.key, required this.diseaseKey});
 
   @override
   Widget build(BuildContext context) {
-
     final t = AppLocalization.of(context);
+    final info = diseaseInfoFor(diseaseKey);
+    final diseaseName = t.translate(info.nameKey);
 
     return Scaffold(
-
       backgroundColor: const Color(0xfff5f5f5),
 
       appBar: AppBar(
@@ -47,82 +36,50 @@ class TreatmentPlanScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (info.overviewKey != null)
+              sectionCard(
+                t.translate("disease_overview"),
+                t.translate(info.overviewKey!),
+                Icons.info_outline,
+              ),
 
-            /// Disease Description
-            sectionCard(
-              t.translate("disease_overview"),
-              t.translate("disease_overview_text"),
-              Icons.info_outline,
-            ),
+            if (info.overviewKey != null) const SizedBox(height: 15),
 
-            const SizedBox(height: 15),
+            if (info.waterKey != null)
+              sectionCard(
+                t.translate("water_management"),
+                t.translate(info.waterKey!),
+                Icons.water_drop,
+              ),
 
-            /// Water Management
-            sectionCard(
-              t.translate("water_management"),
-              t.translate("water_management_text"),
-              Icons.water_drop,
-            ),
+            if (info.waterKey != null) const SizedBox(height: 15),
 
-            const SizedBox(height: 15),
+            if (info.fertilizerKey != null)
+              sectionCard(
+                t.translate("fertilizer_recommendation_title"),
+                t.translate(info.fertilizerKey!),
+                Icons.eco,
+              ),
 
-            /// Fertilizer Recommendation
-            sectionCard(
-              t.translate("fertilizer_recommendation_title"),
-              t.translate("fertilizer_recommendation_text"),
-              Icons.eco,
-            ),
+            if (info.fertilizerKey != null) const SizedBox(height: 15),
 
-            const SizedBox(height: 15),
+            if (info.chemicalKey != null)
+              sectionCard(
+                t.translate("chemical_treatment"),
+                t.translate(info.chemicalKey!),
+                Icons.science,
+              ),
 
-            /// Chemical Treatment
-            sectionCard(
-              t.translate("chemical_treatment"),
-              t.translate("chemical_treatment_text"),
-              Icons.science,
-            ),
+            if (info.chemicalKey != null) const SizedBox(height: 15),
 
-            const SizedBox(height: 15),
-
-            /// Prevention
-            sectionCard(
-              t.translate("prevention_tips"),
-              t.translate("prevention_tips_text"),
-              Icons.shield,
-            ),
+            if (info.preventionKey != null)
+              sectionCard(
+                t.translate("prevention_tips"),
+                t.translate(info.preventionKey!),
+                Icons.shield,
+              ),
 
             const SizedBox(height: 30),
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryGreen,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-
-                onPressed: () {
-                  saveResult(context);
-                },
-
-                icon: const Icon(Icons.save,color: Colors.white),
-
-                label: Text(
-                  t.translate("save_result"),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 45)
-
           ],
         ),
       ),
@@ -130,7 +87,6 @@ class TreatmentPlanScreen extends StatelessWidget {
   }
 
   Widget sectionCard(String title, String text, IconData icon) {
-
     return Container(
       padding: const EdgeInsets.all(18),
 
@@ -142,8 +98,7 @@ class TreatmentPlanScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          Icon(icon,color: AppColors.primaryGreen,size: 28),
+          Icon(icon, color: AppColors.primaryGreen, size: 28),
 
           const SizedBox(width: 15),
 
@@ -151,7 +106,6 @@ class TreatmentPlanScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Text(
                   title,
                   style: const TextStyle(
@@ -164,14 +118,11 @@ class TreatmentPlanScreen extends StatelessWidget {
 
                 Text(
                   text,
-                  style: const TextStyle(
-                    color: AppColors.grey,
-                    height: 1.4,
-                  ),
-                )
+                  style: const TextStyle(color: AppColors.grey, height: 1.4),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

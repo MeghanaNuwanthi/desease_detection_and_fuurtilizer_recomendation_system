@@ -3,13 +3,9 @@ import '../../config/app_colors.dart';
 import '../home/home_screen.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
-
   final Function(Locale) onLanguageSelected;
 
-  const LanguageSelectionScreen({
-    super.key,
-    required this.onLanguageSelected,
-  });
+  const LanguageSelectionScreen({super.key, required this.onLanguageSelected});
 
   @override
   State<LanguageSelectionScreen> createState() =>
@@ -17,7 +13,6 @@ class LanguageSelectionScreen extends StatefulWidget {
 }
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
-
   String selectedLanguage = "si";
 
   @override
@@ -30,15 +25,11 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               const SizedBox(height: 20),
 
               const Text(
                 "Welcome",
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
 
               const Text(
@@ -54,24 +45,16 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
 
               const Text(
                 "Please choose your language to continue.\nඉදිරියට යාමට භාෂාව තෝරන්න.",
-                style: TextStyle(color: AppColors.grey,),
+                style: TextStyle(color: AppColors.grey),
               ),
 
               const SizedBox(height: 40),
 
-              languageCard(
-                title: "සිංහල",
-                subtitle: "Sinhala",
-                value: "si",
-              ),
+              languageCard(title: "සිංහල", subtitle: "Sinhala", value: "si"),
 
               const SizedBox(height: 15),
 
-              languageCard(
-                title: "English",
-                subtitle: "English",
-                value: "en",
-              ),
+              languageCard(title: "English", subtitle: "English", value: "en"),
 
               const Spacer(),
 
@@ -95,7 +78,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
+                        builder: (context) => HomeScreen(
+                          onLanguageSelected: widget.onLanguageSelected,
+                        ),
                       ),
                     );
                   },
@@ -104,7 +89,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     style: TextStyle(
                       fontSize: 18,
                       color: AppColors.black,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -117,8 +103,11 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     );
   }
 
-  Widget languageCard(
-      {required String title, required String subtitle, required String value}) {
+  Widget languageCard({
+    required String title,
+    required String subtitle,
+    required String value,
+  }) {
     bool isSelected = selectedLanguage == value;
 
     return GestureDetector(
@@ -139,12 +128,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
         ),
         child: Row(
           children: [
-
-            const Icon(
-              Icons.language,
-              size: 35,
-              color: AppColors.primaryGreen,
-            ),
+            const Icon(Icons.language, size: 35, color: AppColors.primaryGreen),
 
             const SizedBox(width: 15),
 
@@ -158,18 +142,16 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(subtitle)
+                Text(subtitle),
               ],
             ),
 
             const Spacer(),
 
             Icon(
-              isSelected
-                  ? Icons.check_circle
-                  : Icons.radio_button_unchecked,
+              isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
               color: isSelected ? AppColors.primaryGreen : AppColors.grey,
-            )
+            ),
           ],
         ),
       ),

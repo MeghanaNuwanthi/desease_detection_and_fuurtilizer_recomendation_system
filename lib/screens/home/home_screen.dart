@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import '../../config/app_colors.dart';
-import '../../widgets/disease_card.dart';
 import '../../localization/app_localization.dart';
 import '../../services/camera_service.dart';
+import '../../services/weather_service.dart';
+import '../../services/image_storage_service.dart';
+import '../../data/disease_info_library.dart';
+import '../disease_info/disease_info_detail_screen.dart';
 import '../history/history_screen.dart';
 import '../settings/settings_screen.dart';
 import '../fertilizer/fertilizer_screen.dart';
 import '../scan/scan_loading_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+
+  final void Function(Locale) onLanguageSelected;
+
+  const HomeScreen({
+    super.key,
+    required this.onLanguageSelected,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -33,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const HistoryScreen(),
       const SizedBox(),
       const FertilizerScreen(),
-      const SettingsScreen(),
+      SettingsScreen(onLanguageSelected: widget.onLanguageSelected),
     ];
 
     return Scaffold(
@@ -71,9 +80,9 @@ class HomeContent extends StatelessWidget {
             children: [
 
               /// Date
-              const Text(
-                "THURSDAY, 12 OCT",
-                style: TextStyle(
+              Text(
+                _formatTodayLabel(),
+                style: const TextStyle(
                   fontSize: 12,
                   color: AppColors.grey,
                   letterSpacing: 1.5,
@@ -94,7 +103,7 @@ class HomeContent extends StatelessWidget {
 
               const SizedBox(height: 25),
 
-              weatherCard(),
+              const WeatherCard(),
 
               const SizedBox(height: 25),
 
@@ -120,31 +129,17 @@ class HomeContent extends StatelessWidget {
               const SizedBox(height: 30),
 
               /// Diseases section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-
-                  Text(
-                    t.translate("common_diseases"),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  Text(
-                    t.translate("view_all"),
-                    style: const TextStyle(
-                      color: AppColors.primaryGreen,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
+              Text(
+                t.translate("common_diseases"),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               const SizedBox(height: 15),
 
-              diseaseSlider(),
+              const DiseaseSlider(),
 
               const SizedBox(height: 100),
 
@@ -154,52 +149,241 @@ class HomeContent extends StatelessWidget {
       ),
     );
   }
+
+  String _formatTodayLabel() {
+    const weekdays = [
+      "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY",
+      "FRIDAY", "SATURDAY", "SUNDAY",
+    ];
+    const months = [
+      "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+      "JUL", "AUG", "SEP", "OCT", "NOV", "DEC",
+    ];
+    final now = DateTime.now();
+    return "${weekdays[now.weekday - 1]}, ${now.day} ${months[now.month - 1]}";
+  }
 }
 
-Widget weatherCard() {
-  return Container(
-    padding: const EdgeInsets.all(15),
-    decoration: BoxDecoration(
-      color: const Color(0xffdff5df),
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Row(
-      children: [
+/// Shows real current-location weather. Handles loading, permission denial,
+/// and API failure gracefully - weather is a nice-to-have, it should never
+/// block the rest of the app.
+class WeatherCard extends StatefulWidget {
+  const WeatherCard({super.key});
 
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(Icons.wb_sunny, color: Colors.orange),
-        ),
+  @override
+  State<WeatherCard> createState() => _WeatherCardState();
+}
 
-        const SizedBox(width: 15),
+class _WeatherCardState extends State<WeatherCard> {
 
-        const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Ratnapura",
-              style: TextStyle(fontWeight: FontWeight.bold),
+  late Future<WeatherData> _weatherFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _weatherFuture = WeatherService.instance.getCurrentWeather();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<WeatherData>(
+      future: _weatherFuture,
+      builder: (context, snapshot) {
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return _weatherShell(
+            child: const SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
             ),
-            Text("High Humidity (82%)"),
-          ],
-        ),
+          );
+        }
 
-        const Spacer(),
+        if (snapshot.hasError || !snapshot.hasData) {
+          return _weatherShell(
+            onTap: () {
+              setState(() {
+                _weatherFuture = WeatherService.instance.getCurrentWeather();
+              });
+            },
+            child: const Row(
+              children: [
+                Icon(Icons.location_off, color: AppColors.grey),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    "Couldn't get weather - tap to retry (check location permission)",
+                    style: TextStyle(fontSize: 12, color: AppColors.grey),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
 
-        const Text(
-          "28°C",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        final weather = snapshot.data!;
+
+        return _weatherShell(
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.wb_sunny, color: Colors.orange),
+              ),
+
+              const SizedBox(width: 15),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    weather.locationLabel,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "${weather.conditionDescription} · Humidity ${weather.humidityPercent}%",
+                  ),
+                ],
+              ),
+
+              const Spacer(),
+
+              Text(
+                "${weather.temperatureCelsius.round()}°C",
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
           ),
-        )
-      ],
-    ),
-  );
+        );
+      },
+    );
+  }
+
+  Widget _weatherShell({required Widget child, VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: const Color(0xffdff5df),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: child,
+      ),
+    );
+  }
+}
+
+/// Horizontal slider of disease education cards - pulls from
+/// disease_info_library.dart (NOT disease_catalog.dart, which is reserved
+/// for AI scan results). Tapping a card opens the full DOA-sourced article.
+class DiseaseSlider extends StatelessWidget {
+  const DiseaseSlider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+
+    final t = AppLocalization.of(context);
+    final entries = diseaseInfoLibrary.entries.toList();
+
+    return SizedBox(
+      height: 250,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: entries.length,
+        itemBuilder: (context, index) {
+          final diseaseKey = entries[index].key;
+          final article = entries[index].value;
+
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DiseaseInfoDetailScreen(diseaseKey: diseaseKey),
+                ),
+              );
+            },
+            child: Container(
+              width: 220,
+              margin: const EdgeInsets.only(right: 15),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                    child: Image.asset(
+                      article.imageAsset,
+                      height: 120,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        height: 120,
+                        width: double.infinity,
+                        color: article.color.withOpacity(0.12),
+                        child: Icon(Icons.eco, color: article.color, size: 40),
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Text(
+                          t.translate(article.nameKey),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+
+                        const SizedBox(height: 5),
+
+                        Text(
+                          t.translate(article.symptomsKey),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+
+                        const SizedBox(height: 5),
+
+                        Text(
+                          t.translate("learn_more"),
+                          style: const TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
 
 Widget scanCard(BuildContext context) {
@@ -216,11 +400,16 @@ Widget scanCard(BuildContext context) {
 
         if (image != null) {
 
+          final permanentPath =
+              await ImageStorageService.instance.copyToPermanentStorage(image.path);
+
+          if (!context.mounted) return;
+
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (_) => ScanLoadingScreen(
-                imagePath: image.path,
+                imagePath: permanentPath,
               ),
             ),
           );
@@ -284,11 +473,16 @@ Widget uploadCard(BuildContext context) {
 
         if (image != null) {
 
+          final permanentPath =
+              await ImageStorageService.instance.copyToPermanentStorage(image.path);
+
+          if (!context.mounted) return;
+
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (_) => ScanLoadingScreen(
-                imagePath: image.path,
+                imagePath: permanentPath,
               ),
             ),
           );
@@ -336,35 +530,6 @@ Widget uploadCard(BuildContext context) {
   );
 }
 
-Widget diseaseSlider() {
-  return SizedBox(
-    height: 250,
-    child: ListView(
-      scrollDirection: Axis.horizontal,
-      children: const [
-
-        DiseaseCard(
-          title: "Rice Blast",
-          description: "Fungal disease causing lesions on leaves.",
-          image: "assets/images/rice_blast.png",
-        ),
-
-        DiseaseCard(
-          title: "Brown Spot",
-          description: "Brown lesions on rice leaves.",
-          image: "assets/images/brown_spot.png",
-        ),
-
-        DiseaseCard(
-          title: "Leaf Scald",
-          description: "Grey lesions along leaf edges.",
-          image: "assets/images/leaf_scald.png",
-        ),
-      ],
-    ),
-  );
-}
-
 Widget floatingScanButton(BuildContext context) {
 
   return FloatingActionButton(
@@ -378,11 +543,16 @@ Widget floatingScanButton(BuildContext context) {
 
       if(image != null){
 
+        final permanentPath =
+            await ImageStorageService.instance.copyToPermanentStorage(image.path);
+
+        if (!context.mounted) return;
+
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => ScanLoadingScreen(
-              imagePath: image.path,
+              imagePath: permanentPath,
             ),
           ),
         );

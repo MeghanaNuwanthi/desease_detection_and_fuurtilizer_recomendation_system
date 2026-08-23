@@ -1,0 +1,5 @@
+paddy_blast
+brown_spot
+bacterial_leaf_blight
+healthy_leaf
+not_leaf
